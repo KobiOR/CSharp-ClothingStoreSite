@@ -1,0 +1,18 @@
+@model IEnumerable<store2.Models.Item>
+
+@{
+    ViewData["Title"] = "Men";
+}
+
+<h2>Men</h2>
+
+@if (User.IsInRole("admin"))
+{
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
+}
+
+
+@Html.Partial("BoxItem")
+

@@ -1,0 +1,136 @@
+@model IEnumerable<store2.Models.Item>
+
+
+
+@{
+        var pageName = ViewContext.RouteData.Values["action"].ToString();
+}
+
+
+
+ 
+
+
+@using (Html.BeginForm())
+{
+    <div class="serach">
+        <h4>Serach Item</h4>
+        <div>
+            <div class="field">
+                <div class="textSearch">From date of publish</div>
+                @Html.TextBox("fromDate", null, new { type = "date" })
+                <div class="textS">To</div>
+                @Html.TextBox("endDate", null, new { type = "date" })
+                <div class="clear"></div>
+            </div>
+            <div class="field">
+                <div class="textSearch name">Category:</div>
+                @Html.DropDownList("Names","All")
+            </div>
+            <div class="field">
+                <div class="textSearch p">Max Price:</div>
+                <div class="wrapInput">
+                    @Html.RadioButton("MaxPrice", "50")
+                    <label>50</label>
+                </div>
+                <div class="wrapInput">
+                    @Html.RadioButton("MaxPrice", "100")
+                    <label>100</label>
+                </div>
+                <div class="wrapInput">
+                    @Html.RadioButton("MaxPrice", "150")
+                    <label>150</label>
+                </div>
+                <div class="wrapInput">
+                    @Html.RadioButton("MaxPrice", "1000")
+                    <label>All</label>
+                </div>
+                <div class="clear"></div>
+            </div>
+            <div class="field">
+                <div class="textSearch">words from details</div>
+                 @Html.TextBox("SearchDetails")
+                 @*<input type="text" name="words" />*@
+            </div>
+            
+            <input type="submit" value="search" id="searchButton" />
+            <div class="clear"></div>
+        </div>
+    </div>
+    <hr />
+}
+
+
+
+<div class="wrap-box">
+    @foreach (var item in Model)
+    {
+
+        @if (pageName == "Men" && item.Category == "Men")
+        {
+            <div class="box">
+                <div class="picture">
+                    @Html.ActionLink("", "PageItem",new { ID =  item.ID })<img src="@Html.DisplayFor(model => item.Picture)" alt="shirt" height="250" width="250">
+                    <span>@Html.DisplayFor(modelItem => item.Name)</span>
+                </div>
+                <div class="wrap-text">
+                    <div class="text">@Html.DisplayFor(modelItem => item.Details)</div>
+                    <div class="text">@Html.DisplayFor(modelItem => item.Price)&nbsp;$</div>
+                </div>
+                @if (User.IsInRole("admin"))
+                {
+                    <div class="manage">
+                        <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
+                    </div>
+                }
+                    
+            </div>
+        }
+
+        @if (pageName == "Women" && item.Category == "Women")
+        {
+            <div class="box">
+                <div class="picture">
+                    @Html.ActionLink("", "PageItem", new { ID = item.ID })<img src="@Html.DisplayFor(model => item.Picture)" alt="shirt" height="250" width="250">
+                    <span>@Html.DisplayFor(modelItem => item.Name)</span>
+                </div>
+                <div class="wrap-text">
+                    <div class="text">@Html.DisplayFor(modelItem => item.Details)</div>
+                    <div class="text">@Html.DisplayFor(modelItem => item.Price)&nbsp;$</div>
+                </div>
+                @if (User.IsInRole("admin"))
+                {
+                    <div class="manage">
+                        <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
+                    </div>
+                }
+            </div>
+        }
+        @if (pageName == "Children" && item.Category == "Children")
+        {
+            <div class="box">
+                <div class="picture">
+                    @Html.ActionLink("", "PageItem", new { ID = item.ID })<img src="@Html.DisplayFor(model => item.Picture)" alt="shirt" height="250" width="250">
+                    <span>@Html.DisplayFor(modelItem => item.Name)</span>
+                </div>
+                <div class="wrap-text">
+                    <div class="text">@Html.DisplayFor(modelItem => item.Details)</div>
+                    <div class="text">@Html.DisplayFor(modelItem => item.Price)&nbsp;$</div>
+                </div>
+                @if (User.IsInRole("admin"))
+                {
+                    <div class="manage">
+                        <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
+                    </div>
+                }
+            </div>
+        }
+        }
+    <div class="clear"></div>
+</div>

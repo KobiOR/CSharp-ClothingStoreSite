@@ -1,0 +1,152 @@
+@model IEnumerable<object>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+@{
+    List<store2.Models.Item> ListItems = Model.ToList()[0] as List<store2.Models.Item>;
+    List<store2.Models.Supplier> ListSupplier = Model.ToList()[1] as List<store2.Models.Supplier>;
+
+
+    var suppJ = (from i in ListItems
+                 join s in ListSupplier on i.SupplierID equals s.ID
+                 select new { s.Name,i.Category,i.Details,i.DateOfPublish }).Distinct();
+
+
+    var noticesGrouped = ListItems.GroupBy(n => n.SupplierID).Select
+        (group => new
+        {
+            NoticeName = group.Key,
+            Notices = group.ToList(),
+            Count = group.Count()
+        });
+
+}
+
+<h2>Suppliers</h2>
+<p>
+    <a asp-action="Create">Create New Supplier</a>
+</p>
+<h3>Details</h3>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => ListSupplier[0].ID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => ListSupplier[0].Name)
+        </th>
+        <th>
+            num of items
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => ListSupplier[0].ContactName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => ListSupplier[0].Email)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => ListSupplier[0].PhoneNumber)
+        </th>
+        <th></th>
+    </tr>
+    
+@foreach (var item in ListSupplier) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.ID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ContactName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Email)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PhoneNumber)
+        </td>
+        <td>
+            <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
+            <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
+            <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
+        </td>
+    </tr>
+}
+
+</table>
+
+<h3>Number of items for any supplier</h3>
+<table class="table table-bordered">
+    <tr>
+        <th>
+            Supplier ID
+        </th>
+        <th>
+            Number Of Items
+        </th>
+    </tr>
+
+
+    @foreach (var item in noticesGrouped.ToList())
+            {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.NoticeName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Count)
+            </td>
+        </tr>
+
+    }
+
+</table>
+
+
+
+<h2>Items of suppliers</h2>
+<table class="table table-bordered">
+    <tr>
+        <th>
+            Supplier Name
+        </th>
+        <th>
+            Category
+        </th>
+        <th>
+            Details
+        </th>
+        <th>
+            Date of publish
+        </th>
+    </tr>
+
+
+    @foreach (var item in suppJ.ToList())
+            {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Category)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Details)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateOfPublish)
+            </td>
+        </tr>
+
+    }
+
+</table>

@@ -1,0 +1,103 @@
+﻿@{
+    ViewData["Title"] = "Static";
+}
+<h2>@ViewData["Title"]</h2>
+
+<div id="pieChart"></div>
+<script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.4.4/d3.min.js"></script>
+<script src="~/js/code.js"></script>
+
+
+<style>
+    body {
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        margin: auto;
+        position: relative;
+        width: 960px;
+    }
+
+    text {
+        font: 10px sans-serif;
+    }
+
+    form {
+        position: absolute;
+        right: 10px;
+        top: 10px;
+    }
+</style>
+<form id="buttons">
+    <label><input type="radio" name="dataset" value="Kids" checked> Kids</label></br>
+    <label><input type="radio" name="dataset" value="Mens"> Mens</label></br>
+    <label><input type="radio" name="dataset" value="Womens"> Womens</label></br>
+</form>
+<script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>`
+<script>
+
+var width = 400,
+    height = 300,
+    radius = Math.min(width, height) / 2;
+
+var color = d3.scale.category20();
+
+var pie = d3.layout.pie()
+    .value(function(d) { return d.Kids; })
+    .sort(null);
+
+var arc = d3.svg.arc()
+    .innerRadius(radius - 100)
+    .outerRadius(radius - 20);
+
+var svg = d3.select("content").append("svg")
+    .attr("width", width)
+    .attr("height", height)
+    .append("g")
+    .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+
+d3.tsv("https://dl.dropboxusercontent.com/u/54664491/data.tsv",type,
+     function(error, data) {
+  if (error) throw error;
+
+  var path = svg.datum(data).selectAll("path")
+      .data(pie)
+    .enter().append("path")
+      .attr("fill", function(d, i) { return color(i); })
+      .attr("d", arc)
+      .each(function(d) { this._current = d; }); // store the initial angles
+
+  d3.selectAll("input")
+      .on("change", change);
+
+  var timeout = setTimeout(function() {
+    d3.select("input[value=\"Mens\"]").property("checked", true).each(change);
+  }, 2000);
+
+  function change() {
+    var value = this.value;
+    clearTimeout(timeout);
+    pie.value(function(d) { return d[value]; }); // change the value function
+    path = path.data(pie); // compute the new angles
+    path.transition().duration(750).attrTween("d", arcTween); // redraw the arcs
+  }
+});
+
+function type(d) {
+  d.Mens = +d.Mens;
+  d.Kids = +d.Kids;
+  d.Womens = +d.Womens;
+
+  return d;
+}
+
+// Store the displayed angles in _current.
+// Then, interpolate from _current to the new angles.
+// During the transition, _current is updated in-place by d3.interpolate.
+function arcTween(a) {
+  var i = d3.interpolate(this._current, a);
+  this._current = i(0);
+  return function(t) {
+    return arc(i(t));
+  };
+}
+
+</script>

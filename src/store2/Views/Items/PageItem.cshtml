@@ -1,0 +1,110 @@
+@model IEnumerable<store2.Models.Item>
+
+@{
+    ViewData["Title"] = "PageItem";
+}
+
+<h2>Item Page</h2>
+@foreach (var item in Model)
+{
+
+    <div class="ItemPage">
+        <div class="itemDetails">
+            <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayNameFor(model => model.Category)
+                </dt>
+                <dd><br />
+                    @Html.DisplayFor(modelItem => item.Name)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.DateOfPublish)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => item.DateOfPublish)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Details)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => item.Details)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Name)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => item.Name)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Price)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => item.Price)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.SupplierID)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => item.SupplierID)
+                </dd>
+            </dl>
+        </div>
+        <div class="pic"><img src="@Html.DisplayFor(model => item.Picture)" alt="shirt" height="400" width="400"></div>
+        <div class="clear"></div>
+    </div>
+
+
+    @*<div>
+        <h4>Item</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.Category)
+            </dt>
+            <dd>
+                @Html.DisplayFor(modelItem => item.Name)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.DateOfPublish)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => item.DateOfPublish)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Details)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => item.Details)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Name)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => item.Name)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Picture)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => item.Picture)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Price)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => item.Price)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.SupplierID)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => item.SupplierID)
+            </dd>
+        </dl>
+    </div>*@
+}
+
+
+
+
+
